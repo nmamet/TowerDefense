@@ -15,13 +15,13 @@ public class Vue extends JFrame{
 	
 	
 	
-	public Vue(){
+	public Vue(int rowCount, int colCount, int [] tabRowPath, int[] tabColPath){
 		
 		int widthWindow = 1000;
 		int heigthWindow = 1000;
 		JPanel fieldPanel;
 		//The place where you'll setup your turrets
-		fieldPanel = new Terrain();
+		fieldPanel = Terrain.buildTerrain(rowCount, colCount, tabRowPath, tabColPath);
 		
 		this.getContentPane().add(fieldPanel, BorderLayout.CENTER);
 		
@@ -30,16 +30,25 @@ public class Vue extends JFrame{
 		sidePanel.setLayout(new BorderLayout());
 		
 		JPanel turretMenu = new JPanel();
+		SpriteBuilder sb;
+		try {
+			sb = new SpriteBuilder(64, 2, 5, 8, "turrets_units.png");
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			System.exit(1);
+			sb = null;
+		}
 		turretMenu.setLayout(new BoxLayout(turretMenu,BoxLayout.PAGE_AXIS));
 		try {
-			turretMenu.add(new BoutonTour(0,0));
-			turretMenu.add(new BoutonTour(0,1));
-			turretMenu.add(new BoutonTour(0,2));
-			turretMenu.add(new BoutonTour(0,3));
-			turretMenu.add(new BoutonTour(0,4));
-			turretMenu.add(new BoutonTour(1,0));
-			turretMenu.add(new BoutonTour(1,1));
-			turretMenu.add(new BoutonTour(1,2));
+			turretMenu.add(new BoutonTour(sb.getSprite(0)));
+			turretMenu.add(new BoutonTour(sb.getSprite(1)));
+			turretMenu.add(new BoutonTour(sb.getSprite(2)));
+			turretMenu.add(new BoutonTour(sb.getSprite(3)));
+			turretMenu.add(new BoutonTour(sb.getSprite(4)));
+			turretMenu.add(new BoutonTour(sb.getSprite(5)));
+			turretMenu.add(new BoutonTour(sb.getSprite(6)));
+			turretMenu.add(new BoutonTour(sb.getSprite(7)));
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -64,6 +73,6 @@ public class Vue extends JFrame{
 	}
 	
 	public static void main(String[] args){
-		Vue v = new Vue();
+		//Vue v = new Vue(rowCount, colCount);
 	}
 }

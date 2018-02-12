@@ -15,16 +15,9 @@ public class BoutonTour extends JButton{
 	
 	private BufferedImage sprite; 
 	
-	public BoutonTour(int row, int column) throws IOException{
+	public BoutonTour(BufferedImage i) throws IOException{
 		super();	
-		sprite = sprite.getSubimage(64*column, 64*row, 64, 64);
-		//ImageIcon i = new ImageIcon(sprite);
-		
-		setIcon(new ImageIcon(sprite));
-		//Color c = getBorder().getBorderInsets(c).getLineColor();
-		//setBorder(BorderFactory.createLineBorder(new Color(0f,0f,0f, 1f), 10));
-		//setBorderPainted(false);
+		setIcon(new ImageIcon(i));
 		setFocusPainted(false);
-		//setContentAreaFilled(false);
 	}
 }
