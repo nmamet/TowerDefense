@@ -49,12 +49,23 @@ public class Terrain extends JPanel{
 		if(!t.isInField(t.rowStart, t.colStart)){
 			return null;
 		}
+		int rowIMoinsUn = t.rowStart;
+		int colIMoinsUn = t.colStart;
+		int rowI;
+		int colI;
 		Case c = t.cellList[t.rowStart][t.colStart];
 		for(int i=1;i<length;i++){
-			if(!t.isInField(tabRowPath[i], tabColPath[i])){
+			rowI = tabRowPath[i];
+			colI = tabRowPath[i];
+			if(!t.isInField(rowI, colI) || !t.isNeighbour(rowIMoinsUn, colIMoinsUn, rowI, colI)){
 				return null;
 			}
 			Case tmp = t.cellList[tabRowPath[i]][tabColPath[i]];
+			int dRow = rowI-rowIMoinsUn;
+			int dCol = colI-colIMoinsUn;
+			switch(dRow){
+			case 1: 
+			}
 			c.setCaseType(CaseType.EAST_NORTH);
 			c = tmp;
 		}
@@ -66,5 +77,9 @@ public class Terrain extends JPanel{
 	
 	private boolean isInField(int row, int col){
 		return col<colCount && 0<=col && 0<=row && row <=rowCount;
+	}
+	
+	private boolean isNeighbour(int row1, int col1, int row2, int col2){
+		return (row1 == row2 && (col1+1 == col2 || col1-1 == col2) || (col1 == col2 && (row1+1 == row2 || row1-1 == row2)));
 	}
 }

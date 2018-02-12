@@ -46,13 +46,21 @@ public class Terrain implements Field {
 			return null;
 		}
 		Case c = t.tab[t.rowStart][t.colStart];
+		int rowIMoinsUn = t.rowStart;
+		int colIMoinsUn = t.colStart;
+		int rowI;
+		int colI;
 		for(int i=1;i<length;i++){
-			if(!t.isInField(tabRowPath[i], tabColPath[i])){
+			rowI = tabRowPath[i];
+			colI = tabRowPath[i];
+			if(!t.isInField(rowI, colI) || !t.isNeighbour(rowIMoinsUn, colIMoinsUn, rowI, colI)){
 				return null;
 			}
-			Case tmp = t.tab[tabRowPath[i]][tabColPath[i]];
+			Case tmp = t.tab[rowI][colI];
 			c.setNext(tmp);
 			c = tmp;
+			rowIMoinsUn = rowI;
+			colIMoinsUn = colI;
 		}
 		t.colEnd = tabColPath[length-1];
 		t.rowEnd = tabRowPath[length-1];
@@ -70,5 +78,9 @@ public class Terrain implements Field {
 	
 	private boolean isInField(int row, int col){
 		return col<nbCol && 0<=col && 0<=row && row <=nbRow;
+	}
+	
+	private boolean isNeighbour(int row1, int col1, int row2, int col2){
+		return (row1 == row2 && (col1+1 == col2 || col1-1 == col2) || (col1 == col2 && (row1+1 == row2 || row1-1 == row2)));
 	}
 }
