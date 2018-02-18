@@ -1,4 +1,4 @@
-package IHM;
+package ihm;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -11,18 +11,21 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 	
 
-public class Vue extends JFrame{
+public class VueJeu extends JFrame{
 	
 	
 	
-	public Vue(int rowCount, int colCount, int [] tabRowPath, int[] tabColPath){
+	public VueJeu(int rowCount, int colCount, int [] tabRowPath, int[] tabColPath){
 		
 		int widthWindow = 1000;
-		int heigthWindow = 1000;
+		int heigthWindow = 800;
 		JPanel fieldPanel;
 		//The place where you'll setup your turrets
 		fieldPanel = Terrain.buildTerrain(rowCount, colCount, tabRowPath, tabColPath);
-		
+		if(fieldPanel == null) {
+			System.out.println("Erreur lors de la construction du terrain");
+			System.exit(1);
+		}
 		this.getContentPane().add(fieldPanel, BorderLayout.CENTER);
 		
 		// The place where you'll select turrets to place and stuff
@@ -70,9 +73,5 @@ public class Vue extends JFrame{
 		setSize(widthWindow, heigthWindow);
 		
 		setVisible(true);
-	}
-	
-	public static void main(String[] args){
-		//Vue v = new Vue(rowCount, colCount);
 	}
 }

@@ -1,4 +1,4 @@
-package Model;
+package model;
 
 public class Terrain implements Field {
 	private int nbCol;
@@ -52,7 +52,7 @@ public class Terrain implements Field {
 		int colI;
 		for(int i=1;i<length;i++){
 			rowI = tabRowPath[i];
-			colI = tabRowPath[i];
+			colI = tabColPath[i];
 			if(!t.isInField(rowI, colI) || !t.isNeighbour(rowIMoinsUn, colIMoinsUn, rowI, colI)){
 				return null;
 			}
@@ -81,6 +81,6 @@ public class Terrain implements Field {
 	}
 	
 	private boolean isNeighbour(int row1, int col1, int row2, int col2){
-		return (row1 == row2 && (col1+1 == col2 || col1-1 == col2) || (col1 == col2 && (row1+1 == row2 || row1-1 == row2)));
+		return ((row1 == row2 && (col1+1 == col2 || col1-1 == col2)) || (col1 == col2 && (row1+1 == row2 || row1-1 == row2)));
 	}
 }

@@ -1,4 +1,4 @@
-package IHM;
+package ihm;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
