@@ -12,7 +12,7 @@ public class Main {
 			if(t==null) {
 				System.out.println("t est null");
 			}
-			//VueJeu v = new VueJeu(30,30,tabRowPath,tabColPath);
-			VueMenu v = new VueMenu();
+			VueJeu v = new VueJeu(30,30,tabRowPath,tabColPath);
+			//VueMenu v = new VueMenu();
 		}
 }

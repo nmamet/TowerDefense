@@ -1,5 +1,6 @@
 package model;
 
 public interface Field {
-	public FieldCell getCell(int row, int col) throws OutOfFieldException;
+	public Cell getCell(Position p) throws OutOfFieldException;
+	public PositionningSystem getSystem();
 }

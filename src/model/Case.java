@@ -2,18 +2,18 @@ package model;
 
 import java.util.ArrayList;
 
-public class Case implements FieldCell, PathCell {
-	private FieldCell north;
-	private FieldCell west;
-	private FieldCell east;
-	private FieldCell south;
-	private PathCell next;
+public class Case implements Cell, Path {
+	private Cell north;
+	private Cell west;
+	private Cell east;
+	private Cell south;
+	private Path next;
 	
 	public Case(){
 		
 	}
 	
-	public boolean setNorth(FieldCell tab){
+	public boolean setNorth(Cell tab){
 		boolean r = false;
 		if(north == null && next == null){
 			north = tab;
@@ -22,7 +22,7 @@ public class Case implements FieldCell, PathCell {
 		return r;
 	}
 	
-	public boolean setWest(FieldCell n){
+	public boolean setWest(Cell n){
 		boolean r = false;
 		if(west == null && next == null){
 			west = n;
@@ -31,7 +31,7 @@ public class Case implements FieldCell, PathCell {
 		return r;
 	}
 	
-	public boolean setEast(FieldCell n){
+	public boolean setEast(Cell n){
 		boolean r = false;
 		if(east== null && next == null){
 			east = n;
@@ -40,7 +40,7 @@ public class Case implements FieldCell, PathCell {
 		return r;
 	}
 	
-	public boolean setSouth(FieldCell n){
+	public boolean setSouth(Cell n){
 		boolean r = false;
 		if(south == null && next == null){
 			south = n;
@@ -50,8 +50,8 @@ public class Case implements FieldCell, PathCell {
 	}
 	
 	@Override
-	public ArrayList<FieldCell> getNeighbour() {
-		ArrayList<FieldCell> l = new ArrayList<FieldCell>();
+	public ArrayList<Cell> getNeighbour() {
+		ArrayList<Cell> l = new ArrayList<Cell>();
 		if(north != null){
 			l.add(north);
 		}
@@ -68,11 +68,11 @@ public class Case implements FieldCell, PathCell {
 	}
 
 	@Override
-	public PathCell getNext() {
+	public Path getNext() {
 		return next;
 	}
 
-	public boolean setNext(PathCell n){
+	public boolean setNext(Path n){
 		boolean r = false;
 		if(next == null && n != null && getNeighbour().contains(n)){
 			next = n;

@@ -68,7 +68,7 @@ public class Terrain implements Field {
 	}
 	
 	@Override
-	public FieldCell getCell(int row, int col) throws OutOfFieldException {
+	public Cell getCell(int row, int col) throws OutOfFieldException {
 		if(isInField(row, col)){
 			return tab[row][col];
 		} else {
