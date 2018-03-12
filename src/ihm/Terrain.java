@@ -1,7 +1,10 @@
 package ihm;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.LayoutManager;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -17,12 +20,14 @@ public class Terrain extends JPanel{
 	private int rowStart;
 	private int colEnd;
 	private int rowEnd;
+	private ArrayList<Unit> units;
 	
 	private Terrain(int rowCount, int colCount){
 		super();
 		this.rowCount = rowCount;
 		this.colCount = colCount;
 		cellList  = new Case[rowCount][];
+
 		setLayout(new GridLayout(rowCount, colCount, -1, -1));
 		for(int i = 0;i<rowCount;i++){
 			cellList[i] = new Case[colCount];
@@ -37,12 +42,12 @@ public class Terrain extends JPanel{
 		
 	public static Terrain buildTerrain(int nbRow, int nbCol, int[] tabRowPath, int[] tabColPath){
 		if(nbRow <= 0 || nbCol <= 0){
-			System.out.println("Limites négatives");
+			System.out.println("Limites nï¿½gatives");
 			return null;
 		}
 		int length = tabColPath.length;
 		if(length != tabRowPath.length){
-			System.out.println("les tableaux du path sont de taille différentes");
+			System.out.println("les tableaux du path sont de taille diffï¿½rentes");
 			return null;
 		}
 		Terrain t = new Terrain(nbRow, nbCol);
@@ -104,4 +109,25 @@ public class Terrain extends JPanel{
 	private boolean isNeighbour(int row1, int col1, int row2, int col2){
 		return ((row1 == row2 && (col1+1 == col2 || col1-1 == col2)) || (col1 == col2 && (row1+1 == row2 || row1-1 == row2)));
 	}
+	/*
+	@Override
+	public void paintComponent(Graphics g){
+		CustomGridLayout l = (CustomGridLayout) getLayout();
+		//System.out.println("paint1 "+ l.getRows() + " " + l.getColumns() );
+		super.paintComponent(g);
+		//System.out.println("paint2 "+ l.getRows() + " " + l.getColumns() );
+		
+	}
+	
+	@Override
+	public Component add(Component c){
+		//System.out.println("terrain.add");
+		if(c instanceof Unit){
+			System.out.println("terrain.add unit");
+			
+		}
+		
+		return super.add(c);
+	}
+	*/
 }

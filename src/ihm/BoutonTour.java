@@ -1,5 +1,6 @@
 package ihm;
 
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 
 import java.io.File;
@@ -15,7 +16,7 @@ public class BoutonTour extends JButton{
 	
 	private BufferedImage sprite; 
 	
-	public BoutonTour(BufferedImage i) throws IOException{
+	public BoutonTour(Image i) throws IOException{
 		super();	
 		setIcon(new ImageIcon(i));
 		setFocusPainted(false);
