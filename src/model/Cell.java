@@ -1,6 +1,6 @@
 package model;
 
-public interface Cell {
-	public PositionningSystem getSystem();
-	public Position getPos();
+public interface Cell<T extends Position> {
+	public PositioningSystem<T> getSystem();
+	public T pos();
 }

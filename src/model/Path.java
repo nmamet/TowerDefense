@@ -1,5 +1,5 @@
 package model;
 
-public interface Path {
-	public Position getNextPos(Position p);
+public interface Path<T extends PathPosition> {
+	public T startingPos();
 }

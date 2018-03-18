@@ -1,29 +1,45 @@
 package ihm;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 
 import javax.swing.JComponent;
 
-public class Case extends JComponent{
-	public enum Direction{
-		NORTH,WEST,SOUTH,EAST,NONE
-	}
-	public Case(){
-		super();
-		in = Direction.NONE;
-		out = Direction.NONE;
-	}
+import model.Cell;
+import model.Position;
+import model.PositioningSystem;
+import model.TwoDimCoordinate;
+
+public class Case extends JComponent implements Cell<TwoDimCoordinate>{
 	
 	private Direction in;
 	private Direction out;
+	private PositioningSystem<TwoDimCoordinate> ps;
+	private TwoDimCoordinate pos;
 	
-	public void setDirectionIn(Direction in){
+	public enum Direction{
+		NORTH,WEST,SOUTH,EAST,NONE
+	}
+	
+	public Case(PositioningSystem<TwoDimCoordinate> ps, TwoDimCoordinate pos){
+		super();
+		in = Direction.NONE;
+		out = Direction.NONE;
+		this.ps = ps;
+		this.pos = pos;
+	}
+	
+	public void setDirectionIn(Direction in) throws CyclingPathException{
+		if(this.in != Direction.NONE) {
+			throw new CyclingPathException();
+		}
 		this.in = in;
 	}
 	
-	public void setDirectionOut(Direction out){
+	public void setDirectionOut(Direction out) throws CyclingPathException{
+		if(this.out != Direction.NONE) {
+			throw new CyclingPathException();
+		}
 		this.out = out;
 	}
 	
@@ -50,5 +66,15 @@ public class Case extends JComponent{
 		default: ;
 		}
 		
+	}
+
+	@Override
+	public PositioningSystem<TwoDimCoordinate> getSystem() {
+		return ps;
+	}
+
+	@Override
+	public TwoDimCoordinate pos() {
+		return pos;
 	}
 }
