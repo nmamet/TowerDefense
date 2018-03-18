@@ -1,7 +1,10 @@
 package ihm;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.LayoutManager;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -25,6 +28,7 @@ public class Terrain extends JPanel implements Field<TwoDimCoordinate, Case>{
 	private Path<Path2DCoord> path;
 	private int colEnd;
 	private int rowEnd;
+	private ArrayList<Unit> units;
 	
 	Terrain(TwoDimArraySystem ps, Path<Path2DCoord> path) throws PathOutOfField, CyclingPathException{
 		super();
@@ -33,6 +37,7 @@ public class Terrain extends JPanel implements Field<TwoDimCoordinate, Case>{
 		int rowCount = ps.nbOfRows();
 		int colCount = ps.nbOfColumns();
 		cellList  = new Case[rowCount][];
+
 		setLayout(new GridLayout(rowCount, colCount, -1, -1));
 		for(int row = 0;row<rowCount;row++){
 			cellList[row] = new Case[colCount];
@@ -70,53 +75,7 @@ public class Terrain extends JPanel implements Field<TwoDimCoordinate, Case>{
 		}
 		
 	}
-	/*	
-	public static Terrain buildTerrain(TwoDimArraySystem ps, Path<Path2DCoord> path) throws PathOutOfField {
 		
-		Terrain t = new Terrain(ps, path);
-		
-		/*
-		for(int i=1;i<path;i++){
-			rowI = tabRowPath[i];
-			colI = tabColPath[i];
-			if(!t.isInField(rowI, colI) || !t.isNeighbour(rowIMoinsUn, colIMoinsUn, rowI, colI)){
-				return null;
-			}
-			Case tmp = t.cellList[tabRowPath[i]][tabColPath[i]];
-			int dRow = rowI-rowIMoinsUn;
-			int dCol = colI-colIMoinsUn;
-			switch(dRow){
-			case 1: 
-				tmp.setDirectionIn(Direction.NORTH);
-				c.setDirectionOut(Direction.SOUTH);
-				break;
-			case -1: 
-				tmp.setDirectionIn(Direction.SOUTH);
-				c.setDirectionOut(Direction.NORTH);
-				break;
-			case 0 : 
-				switch(dCol) {
-				case 1:
-					tmp.setDirectionIn(Direction.WEST);
-					c.setDirectionOut(Direction.EAST);
-					break;
-				case -1:
-					tmp.setDirectionIn(Direction.EAST);
-					c.setDirectionOut(Direction.WEST);
-					break;
-				}
-			}
-			//c.setCaseType(CaseType.EAST_NORTH);
-			c = tmp;
-			rowIMoinsUn = rowI;
-			colIMoinsUn = colI;
-		}
-		t.colEnd = tabColPath[length-1];
-		t.rowEnd = tabRowPath[length-1];
-		
-		return t;
-	}*/
-
 	@Override
 	public Case getCell(TwoDimCoordinate p) throws OutOfFieldException {
 		if(!ps.isInSystem(p)) {
@@ -129,4 +88,25 @@ public class Terrain extends JPanel implements Field<TwoDimCoordinate, Case>{
 	public PositioningSystem<TwoDimCoordinate> getSystem() {
 		return ps;
 	}
+	/*
+	@Override
+	public void paintComponent(Graphics g){
+		CustomGridLayout l = (CustomGridLayout) getLayout();
+		//System.out.println("paint1 "+ l.getRows() + " " + l.getColumns() );
+		super.paintComponent(g);
+		//System.out.println("paint2 "+ l.getRows() + " " + l.getColumns() );
+		
+	}
+	
+	@Override
+	public Component add(Component c){
+		//System.out.println("terrain.add");
+		if(c instanceof Unit){
+			System.out.println("terrain.add unit");
+			
+		}
+		
+		return super.add(c);
+	}
+	*/
 }

@@ -1,5 +1,6 @@
 package ihm;
 
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -39,8 +40,13 @@ public class SpriteBuilder {
 		}
 	}
 	
-	public BufferedImage getSprite(int n){
+	public Image getSprite(int n){
 		return sprites[n];
 	}
 	
+	public Image getSprite(int n, int width, int height, int angle){
+		Image ret;
+		ret = sprites[n].getScaledInstance(width, height, Image.SCALE_DEFAULT);
+		return ret;
+	}
 }

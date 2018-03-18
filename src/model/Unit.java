@@ -11,7 +11,7 @@ class Unit implements MovingObject<Path2DCoord>{
 		this.pos = pos;
 		this.speed = speed;
 		if(pos == null) {
-			System.out.println("warning : unit initialiséeavec une pos nulle");
+			System.out.println("warning : unité initialisée avec une pos nulle");
 		}
 	}
 	
