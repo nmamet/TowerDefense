@@ -1,6 +1,6 @@
 package model;
 
-public class TwoDimCoordinate {
+public class TwoDimCoordinate implements Position{
 	private int row;
 	private int column;
 	
@@ -8,4 +8,7 @@ public class TwoDimCoordinate {
 		row = r;
 		column = c;
 	}
+	
+	public int column(){return column;}
+	public int row(){return row;}
 }

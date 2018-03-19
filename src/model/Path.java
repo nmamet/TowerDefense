@@ -1,5 +1,5 @@
 package model;
 
 public interface Path {
-	public Position getNextPos(Position p);
+	public Position getFirstPos();
 }
