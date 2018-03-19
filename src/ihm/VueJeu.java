@@ -3,36 +3,54 @@ package ihm;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.Collection;
 
+import javax.sound.midi.ControllerEventListener;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import model.CoordPath2D;
-import model.TwoDimCoordinate;
-	
+import model.Model;
+import model.MovingObject;
+import model.Path;
+import model.Path2DCoord;
+import model.TwoDimArraySystem;
+
 
 public class VueJeu extends JFrame{
 	
+	Model<Path2DCoord> model;
 	
-	
-	public VueJeu(int rowCount, int colCount, int [] tabRowPath, int[] tabColPath){
+	public VueJeu(Model<Path2DCoord> m, TwoDimArraySystem ps, Path<Path2DCoord> path) throws PathOutOfField{
 		
+		model = m;
 		int widthWindow = 1000;
 		int heigthWindow = 800;
 		Terrain fieldPanel;
+		FieldWrapper centerPanel;
 		//The place where you'll setup your turrets
-		JPanel centerPanel = new JPanel();
-		fieldPanel = Terrain.buildTerrain(rowCount, colCount, tabRowPath, tabColPath);
-		if(fieldPanel == null) {
+
+		try {
+			fieldPanel = new Terrain(ps, path);
+		} catch (CyclingPathException e2) {
 			System.out.println("Erreur lors de la construction du terrain");
+			e2.printStackTrace();
 			System.exit(1);
+			fieldPanel = null;
 		}
+		Unit.setField(fieldPanel);
+		centerPanel = new FieldWrapper(fieldPanel);
 		this.getContentPane().add(centerPanel, BorderLayout.CENTER);
-		centerPanel.add(fieldPanel);
-		centerPanel.setLayout(new CustomLayout());
+		/*MovingObject<Path2DCoord> mo = m.launchWave().iterator().next();
+		Unit u = new Unit(mo);
+		centerPanel.add(u);*/
+		//centerPanel.add(fieldPanel);
+		//centerPanel.setLayout(null);
+
 		// The place where you'll select turrets to place and stuff
 		JPanel sidePanel = new JPanel();
 		sidePanel.setLayout(new BorderLayout());
@@ -73,14 +91,25 @@ public class VueJeu extends JFrame{
 			unitBuilder = null;
 		}
 		
-		Unit u = new Unit(new CoordPath2D(new TwoDimCoordinate(0, 0)));
+		//Unit u = new Unit(new Path2DCoord(new TwoDimCoordinate(0, 0)));
 		//fieldPanel.add(u);
 		
 		sidePanel.add(turretMenu, BorderLayout.CENTER);
 		
 		JPanel otherStuff = new JPanel();
 		sidePanel.add(otherStuff, BorderLayout.SOUTH);
-		otherStuff.add(new JButton("Ready"));
+		JButton buttonLaunch = new JButton("Ready");
+		buttonLaunch.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Collection<? extends MovingObject<Path2DCoord>> l = m.launchWave();
+				for( MovingObject<Path2DCoord> unit : l) {
+					
+				}
+			}
+		});
+		otherStuff.add(buttonLaunch);
 		otherStuff.add(new JButton("Sell"));
 		
 		getContentPane().add(sidePanel, BorderLayout.EAST);
@@ -89,7 +118,10 @@ public class VueJeu extends JFrame{
 		setResizable(false);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(widthWindow, heigthWindow);
-		
 		setVisible(true);
+		centerPanel.setField();
+		MovingObject<Path2DCoord> mo = m.launchWave().iterator().next();
+		Unit u = new Unit(mo);
+		centerPanel.add(u);
 	}
 }

@@ -3,33 +3,55 @@ package ihm;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.util.Timer;
 
 import javax.swing.JComponent;
 
-import model.CoordPath2D;
-import model.TwoDimCoordinate;
+import model.MovingObject;
+import model.OutOfFieldException;
+import model.Path2DCoord;
+import model.PathPosition;
 
-public class Unit extends JComponent{
+public class Unit extends MovingGraphic{
 	
-	private CoordPath2D pos;
-	private Timer t;
+	private MovingObject<Path2DCoord> unit;
+	private Timer timer;
+	private static Terrain field;
 	
-	public Unit(CoordPath2D pos){
+	public Unit(MovingObject<Path2DCoord> unit){
 		super();
-		this.pos = pos;
-		
+		this.unit = unit;
 	}
 	
-	public CoordPath2D getPos(){
-		return pos;
+	public PathPosition getPos(){
+		return unit.getPos();
 	}
 
+	public static void setField(Terrain t){
+		field = t;
+	}
+	
 	@Override
 	public void paintComponent(Graphics g){
 		System.out.println("paint unit");
+		System.out.println(this.getLocation());
 		super.paintComponent(g);
 		g.setColor(Color.BLACK);
-		g.fillRect(2, 2, getWidth(), getHeight());
+		g.fillRect(2, 2, 70, 70);
+	}
+
+	@Override
+	public Point getGraphicPosition() {
+		try {
+			System.out.println("getGraphicsPosition");
+			return field.getCell(unit.getPos()).getLocation();
+		} catch (OutOfFieldException e) {
+			
+			e.printStackTrace();
+			System.out.println("Ce n'est pas cense arriver. Erreur dans getGraphicsPosition; le path est en dehors du systeme");
+			System.exit(1);
+			return null;
+		}
 	}
 }

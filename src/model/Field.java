@@ -1,6 +1,6 @@
 package model;
 
-public interface Field {
-	public Cell getCell(Position p) throws OutOfFieldException;
-	public PositionningSystem getSystem();
+public interface Field<T extends Position, C extends Cell<T>> {
+	public C getCell(T p) throws OutOfFieldException;
+	public PositioningSystem<T> getSystem();
 }

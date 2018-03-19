@@ -7,8 +7,6 @@ import java.awt.GridLayout;
 import java.awt.LayoutManager;
 import java.util.ArrayList;
 
-import model.CoordPath2D;
-
 public class CustomLayout implements LayoutManager {
 	
 	ArrayList<Unit> units;
@@ -44,7 +42,7 @@ public class CustomLayout implements LayoutManager {
 		//System.out.println("2 " + getRows() + " " + getColumns());
 		for(Unit u : units){
 			//super.addLayoutComponent(null, u);
-			u.setBounds(u.getPos().column(), u.getPos().row(), 200, 200);
+			//u.setBounds(u.getPos().column(), u.getPos().row(), 200, 200);
 			
 		}
 		//System.out.println("fin " + getRows() + " " + getColumns());
