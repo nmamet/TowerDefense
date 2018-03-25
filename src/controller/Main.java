@@ -62,8 +62,8 @@ public class Main {
 			//Path2DCoord c2 = new Path2DCoord(1, 0);
 			//System.out.println(c1.equals(c2));
 			
-			int nbRow = 30;
-			int nbCol = 30;
+			int nbRow = 2;
+			int nbCol = 2;
 			int tabRowPath[] = {0,0,0,0,1,2,3,4,5,5,4,4,5,5,5,5,6,7,8,9,9,9};
 			int tabColPath[] = {0,1,2,3,3,3,3,3,3,4,4,5,5,6,7,8,8,8,8,8,9,10};
 			

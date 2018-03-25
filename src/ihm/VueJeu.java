@@ -31,7 +31,7 @@ public class VueJeu extends JFrame{
 		int widthWindow = 1000;
 		int heigthWindow = 800;
 		Terrain fieldPanel;
-		FieldWrapper centerPanel;
+		GraphicManager centerPanel;
 		//The place where you'll setup your turrets
 
 		try {
@@ -43,7 +43,7 @@ public class VueJeu extends JFrame{
 			fieldPanel = null;
 		}
 		Unit.setField(fieldPanel);
-		centerPanel = new FieldWrapper(fieldPanel);
+		centerPanel = new GraphicManager(fieldPanel);
 		this.getContentPane().add(centerPanel, BorderLayout.CENTER);
 		/*MovingObject<Path2DCoord> mo = m.launchWave().iterator().next();
 		Unit u = new Unit(mo);
@@ -123,5 +123,6 @@ public class VueJeu extends JFrame{
 		MovingObject<Path2DCoord> mo = m.launchWave().iterator().next();
 		Unit u = new Unit(mo);
 		centerPanel.add(u);
+		//this.repaint();
 	}
 }

@@ -1,20 +1,23 @@
 package ihm;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Insets;
 import java.util.ArrayList;
 
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
-public class FieldWrapper extends JPanel {
+public class GraphicManager extends JPanel {
 	
 	private Terrain t;
 	
-	public FieldWrapper(Terrain t) {
+	public GraphicManager(Terrain t) {
 		super(null);
 		this.t = t;
-		super.add(t);
+		super.add(this.t);
+		//super.setComponentZOrder(this.t, Integer.MAX_VALUE);
 	}
 	
 	//Setup the field location and size (the frame must be visible)
@@ -24,13 +27,16 @@ public class FieldWrapper extends JPanel {
 					this.getWidth() - insets.left - insets.right, 
 					this.getHeight() - insets.top - insets.bottom
 				   	);
-		t.repaint();
+		t.repaint(this.getBounds());
+		System.out.println(this.getBounds());
 	}
 	
 	@Override
 	public Component add(Component c){
 		if(c instanceof MovingGraphic){
+			super.remove(t);
 			super.add(c);
+			super.add(t);
 			moveGraphic((MovingGraphic)c);
 			return c;
 		} else {
@@ -40,32 +46,20 @@ public class FieldWrapper extends JPanel {
 	}
 	
 	public void moveGraphic(MovingGraphic mv){
-		System.out.println("déplacement d'une unité graphique");
-		//
-		
-		
-		
-		//100,100 à changer
-		mv.setBounds(mv.getGraphicPosition().x, mv.getGraphicPosition().y, 100,100);
-		if(mv instanceof Unit){
-			//((Unit) mv).repaint();
-		}
-		
-		System.out.println(mv.getLocation());
+		System.out.println("deplacement d'une unite graphique");
+		mv.setLocation(mv.getGraphicPosition().x, mv.getGraphicPosition().y);
+		//mv.getGraphicPosition();
+		//mv.setLocation(0,0);
+		//System.out.println(mv.getLocation());
 	}
 	/*
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		for (Component c : this.getComponents()){
-			if(c instanceof MovingGraphic){
-				c.repaint();
-				System.out.println("movable graphics repaint");
-			} else {
-				System.out.println("field repaint");
-				c.repaint();;
-			}
-		}
+		//[x=257,y=382,width=85,height=76]
+		System.out.println("paintmanager");
+		g.setColor(Color.BLUE);
+		g.fillRect(0, 0, 5, 5);
 	}
 	*/
 }

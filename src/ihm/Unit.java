@@ -12,6 +12,7 @@ import model.MovingObject;
 import model.OutOfFieldException;
 import model.Path2DCoord;
 import model.PathPosition;
+import model.TwoDimCoordinate;
 
 public class Unit extends MovingGraphic{
 	
@@ -22,6 +23,9 @@ public class Unit extends MovingGraphic{
 	public Unit(MovingObject<Path2DCoord> unit){
 		super();
 		this.unit = unit;
+		this.setSize(field.getCellSize());
+		//this.setPreferredSize(field.getCellSize());
+		//this.setSize(5,5);
 	}
 	
 	public PathPosition getPos(){
@@ -34,18 +38,25 @@ public class Unit extends MovingGraphic{
 	
 	@Override
 	public void paintComponent(Graphics g){
-		System.out.println("paint unit");
-		System.out.println(this.getLocation());
 		super.paintComponent(g);
+		System.out.println("paint unit");
+		System.out.println(this.getBounds());
+		System.out.println("x : " + getX() + " y : "+getY());
 		g.setColor(Color.BLACK);
-		g.fillRect(2, 2, 70, 70);
+		g.fillRect(getX(),getY(), getWidth(), getHeight());
+		g.setColor(Color.RED);
+		g.fillRect(getX(), getY(), getWidth()/2, getHeight()/2);
 	}
 
 	@Override
 	public Point getGraphicPosition() {
 		try {
 			System.out.println("getGraphicsPosition");
-			return field.getCell(unit.getPos()).getLocation();
+			System.out.println("position de la première case");
+			System.out.println((field.getCell(new TwoDimCoordinate(1, 1))).getLocation());
+			//System.out.println(new TwoDimCoordinate(5, 3).row());
+			//return field.getCell(unit.getPos()).getLocation();
+			return field.getCell(new TwoDimCoordinate(0, 0)).getLocation();
 		} catch (OutOfFieldException e) {
 			
 			e.printStackTrace();

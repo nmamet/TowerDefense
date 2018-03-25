@@ -2,6 +2,7 @@ package ihm;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.LayoutManager;
@@ -24,7 +25,7 @@ import model.TwoDimCoordinate;
 
 public class Terrain extends JPanel implements Field<TwoDimCoordinate, Case>{
 	private Case[][] cellList;
-	private PositioningSystem<TwoDimCoordinate> ps;
+	private TwoDimArraySystem ps;
 	private Path<Path2DCoord> path;
 	private int colEnd;
 	private int rowEnd;
@@ -37,8 +38,8 @@ public class Terrain extends JPanel implements Field<TwoDimCoordinate, Case>{
 		int rowCount = ps.nbOfRows();
 		int colCount = ps.nbOfColumns();
 		cellList  = new Case[rowCount][];
-
-		setLayout(new GridLayout(rowCount, colCount, -1, -1));
+		GridLayout layout = new GridLayout(rowCount, colCount, 0, 0);
+		setLayout(layout);
 		for(int row = 0;row<rowCount;row++){
 			cellList[row] = new Case[colCount];
 			for(int col = 0;col<colCount;col++){
@@ -74,6 +75,7 @@ public class Terrain extends JPanel implements Field<TwoDimCoordinate, Case>{
 			nextPos = pos.nextPos();
 		}
 		
+		
 	}
 		
 	@Override
@@ -88,25 +90,17 @@ public class Terrain extends JPanel implements Field<TwoDimCoordinate, Case>{
 	public PositioningSystem<TwoDimCoordinate> getSystem() {
 		return ps;
 	}
-	/*
-	@Override
-	public void paintComponent(Graphics g){
-		CustomGridLayout l = (CustomGridLayout) getLayout();
-		//System.out.println("paint1 "+ l.getRows() + " " + l.getColumns() );
-		super.paintComponent(g);
-		//System.out.println("paint2 "+ l.getRows() + " " + l.getColumns() );
-		
-	}
 	
-	@Override
-	public Component add(Component c){
-		//System.out.println("terrain.add");
-		if(c instanceof Unit){
-			System.out.println("terrain.add unit");
-			
-		}
-		
-		return super.add(c);
+	public Dimension getCellSize() {
+		this.getLayout().layoutContainer(this);
+		System.out.println("calcul de la taille des cases");
+		System.out.println("width : " + getWidth()/ps.nbOfColumns());
+		System.out.println("height : " + getHeight()/ps.nbOfRows());
+		System.out.println("insets : " + getInsets());
+		//System.out.println(getWidth()/30);
+		//System.out.println(getHeight()/30);
+		//System.out.println(ps.nbOfColumns());
+		//System.out.println(ps.nbOfRows());
+		return new Dimension(getWidth()/ps.nbOfColumns(), getHeight()/ps.nbOfRows());
 	}
-	*/
 }

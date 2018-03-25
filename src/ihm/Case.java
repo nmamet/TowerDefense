@@ -46,6 +46,7 @@ public class Case extends JComponent implements Cell<TwoDimCoordinate>{
 	@Override
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
+		//System.out.println("paint case");
 		g.setColor(Color.GRAY);
 		g.fillRect(1, 1, getWidth(), getHeight());
 		g.setColor(Color.WHITE);
