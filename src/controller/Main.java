@@ -21,7 +21,7 @@ public class Main {
 
 	public static ArrayList<TwoDimCoordinate> buildPath(int [] tabRow, int [] tabCol){
 		if(tabRow.length != tabCol.length) {
-			System.out.println("les deux tableaux de path ont des tailles diff�rentes");
+			System.out.println("les deux tableaux de path ont des tailles differentes");
 			return null;
 		}
 		ArrayList<TwoDimCoordinate> l = new ArrayList<TwoDimCoordinate>();
@@ -62,10 +62,10 @@ public class Main {
 			//Path2DCoord c2 = new Path2DCoord(1, 0);
 			//System.out.println(c1.equals(c2));
 			
-			int nbRow = 2;
-			int nbCol = 2;
-			int tabRowPath[] = {0,0,0,0,1,2,3,4,5,5,4,4,5,5,5,5,6,7,8,9,9,9};
-			int tabColPath[] = {0,1,2,3,3,3,3,3,3,4,4,5,5,6,7,8,8,8,8,8,9,10};
+			int nbRow = 4;
+			int nbCol = 4;
+			int tabRowPath[] = {0,0,0,0,1,2,3,4,5,5,4,4,5,5,5,5,6,7,8,9,9,9,8};
+			int tabColPath[] = {0,1,2,3,3,3,3,3,3,4,4,5,5,6,7,8,8,8,8,8,7,6,6};
 			
 			ConcreteModel m;
 			ArrayList<TwoDimCoordinate> l = Main.buildRandomPath(nbRow, nbCol);

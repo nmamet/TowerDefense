@@ -2,6 +2,8 @@ package ihm;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,22 +30,22 @@ public class VueJeu extends JFrame{
 	public VueJeu(Model<Path2DCoord> m, TwoDimArraySystem ps, Path<Path2DCoord> path) throws PathOutOfField{
 		
 		model = m;
-		int widthWindow = 1000;
-		int heigthWindow = 800;
-		Terrain fieldPanel;
+		int widthWindow = 1500;
+		int heightWindow = 1000;
+		Terrain field;
 		GraphicManager centerPanel;
 		//The place where you'll setup your turrets
-
+		
 		try {
-			fieldPanel = new Terrain(ps, path);
+			field = new Terrain(ps, path);
 		} catch (CyclingPathException e2) {
 			System.out.println("Erreur lors de la construction du terrain");
 			e2.printStackTrace();
 			System.exit(1);
-			fieldPanel = null;
+			field = null;
 		}
-		Unit.setField(fieldPanel);
-		centerPanel = new GraphicManager(fieldPanel);
+		//Unit.setField(fieldPanel);
+		centerPanel = new GraphicManager(field);
 		this.getContentPane().add(centerPanel, BorderLayout.CENTER);
 		/*MovingObject<Path2DCoord> mo = m.launchWave().iterator().next();
 		Unit u = new Unit(mo);
@@ -117,12 +119,24 @@ public class VueJeu extends JFrame{
 		setTitle("Tower Defense");
 		setResizable(false);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setSize(widthWindow, heigthWindow);
+		setSize(widthWindow, heightWindow);
+		//this.pack();
+		Container cp = getContentPane();
+		System.out.println(getInsets().top);
+		int centerWidth = widthWindow-cp.getInsets().top-sidePanel.getPreferredSize().width;
+		int centerHeight = heightWindow;
+		System.out.println(centerWidth);
+		System.out.println(centerHeight);
+		
+		CoordinateConverter cc = new CoordinateConverter(new Dimension(centerWidth-10,heightWindow-25), ps);
+		Case.setConverter(cc);
+		System.out.println(cp.getPreferredSize());
 		setVisible(true);
-		centerPanel.setField();
+		//centerPanel.setField();
+		
 		MovingObject<Path2DCoord> mo = m.launchWave().iterator().next();
 		Unit u = new Unit(mo);
-		centerPanel.add(u);
+		//centerPanel.add(u);
 		//this.repaint();
 	}
 }

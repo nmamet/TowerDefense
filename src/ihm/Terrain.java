@@ -23,29 +23,28 @@ import model.PositioningSystem;
 import model.TwoDimArraySystem;
 import model.TwoDimCoordinate;
 
-public class Terrain extends JPanel implements Field<TwoDimCoordinate, Case>{
+public class Terrain implements Field<TwoDimCoordinate, Case>{
 	private Case[][] cellList;
 	private TwoDimArraySystem ps;
 	private Path<Path2DCoord> path;
 	private int colEnd;
 	private int rowEnd;
-	private ArrayList<Unit> units;
 	
 	Terrain(TwoDimArraySystem ps, Path<Path2DCoord> path) throws PathOutOfField, CyclingPathException{
-		super();
+		//super();
 		this.ps = ps;
 		this.path = path;
 		int rowCount = ps.nbOfRows();
 		int colCount = ps.nbOfColumns();
 		cellList  = new Case[rowCount][];
-		GridLayout layout = new GridLayout(rowCount, colCount, 0, 0);
-		setLayout(layout);
+		//GridLayout layout = new GridLayout(rowCount, colCount, 0, 0);
+		//setLayout(layout);
 		for(int row = 0;row<rowCount;row++){
 			cellList[row] = new Case[colCount];
 			for(int col = 0;col<colCount;col++){
 				Case c = new Case(ps, new TwoDimCoordinate(row, col));
-				c.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-				add(c);
+				//c.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+				//add(c);
 				cellList[row][col] = c;
 			}
 		}
@@ -91,16 +90,11 @@ public class Terrain extends JPanel implements Field<TwoDimCoordinate, Case>{
 		return ps;
 	}
 	
-	public Dimension getCellSize() {
-		this.getLayout().layoutContainer(this);
-		System.out.println("calcul de la taille des cases");
-		System.out.println("width : " + getWidth()/ps.nbOfColumns());
-		System.out.println("height : " + getHeight()/ps.nbOfRows());
-		System.out.println("insets : " + getInsets());
-		//System.out.println(getWidth()/30);
-		//System.out.println(getHeight()/30);
-		//System.out.println(ps.nbOfColumns());
-		//System.out.println(ps.nbOfRows());
-		return new Dimension(getWidth()/ps.nbOfColumns(), getHeight()/ps.nbOfRows());
+	public void paintField(Graphics g){
+		for (int i = 0; i< ps.nbOfRows(); i++){
+			for(int j=0; j<ps.nbOfColumns();j++){
+				cellList[i][j].paintCase(g);
+			}
+		}
 	}
 }
