@@ -73,8 +73,6 @@ public class Terrain implements Field<TwoDimCoordinate, Case>{
 			pos = nextPos;
 			nextPos = pos.nextPos();
 		}
-		
-		
 	}
 		
 	@Override
@@ -91,6 +89,7 @@ public class Terrain implements Field<TwoDimCoordinate, Case>{
 	}
 	
 	public void paintField(Graphics g){
+		//System.out.println("Dessin du terrain");
 		for (int i = 0; i< ps.nbOfRows(); i++){
 			for(int j=0; j<ps.nbOfColumns();j++){
 				cellList[i][j].paintCase(g);

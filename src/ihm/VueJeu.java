@@ -30,8 +30,8 @@ public class VueJeu extends JFrame{
 	public VueJeu(Model<Path2DCoord> m, TwoDimArraySystem ps, Path<Path2DCoord> path) throws PathOutOfField{
 		
 		model = m;
-		int widthWindow = 1500;
-		int heightWindow = 1000;
+		int widthWindow = 1000;
+		int heightWindow = 700;
 		Terrain field;
 		GraphicManager centerPanel;
 		//The place where you'll setup your turrets
@@ -122,21 +122,23 @@ public class VueJeu extends JFrame{
 		setSize(widthWindow, heightWindow);
 		//this.pack();
 		Container cp = getContentPane();
-		System.out.println(getInsets().top);
+		//System.out.println(getInsets().top);
 		int centerWidth = widthWindow-cp.getInsets().top-sidePanel.getPreferredSize().width;
 		int centerHeight = heightWindow;
-		System.out.println(centerWidth);
-		System.out.println(centerHeight);
+		//System.out.println(centerWidth);
+		//System.out.println(centerHeight);
 		
-		CoordinateConverter cc = new CoordinateConverter(new Dimension(centerWidth-10,heightWindow-25), ps);
+		CoordinateConverter cc = new CoordinateConverter(new Dimension(centerWidth-10,heightWindow-33), ps);
 		Case.setConverter(cc);
-		System.out.println(cp.getPreferredSize());
+		Unit.setConverter(cc);
+		Unit.setField(field);
+		//System.out.println(cp.getPreferredSize());
 		setVisible(true);
 		//centerPanel.setField();
 		
 		MovingObject<Path2DCoord> mo = m.launchWave().iterator().next();
 		Unit u = new Unit(mo);
-		//centerPanel.add(u);
-		//this.repaint();
+		centerPanel.add(u);
+		this.repaint();
 	}
 }
