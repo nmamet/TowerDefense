@@ -41,4 +41,11 @@ public class ConcreteModel implements Model<Path2DCoord>{
 		}
 		return l;
 	}
+
+	@Override
+	public void addUnits(Collection<MovingObject<Path2DCoord>> units) {
+		t.addUnits(units);
+	}
+	
+	
 }

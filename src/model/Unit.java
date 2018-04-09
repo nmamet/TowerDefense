@@ -6,6 +6,7 @@ class Unit implements MovingObject<Path2DCoord>{
 	private int distance;
 	private int speed;
 	private boolean atTheEnd;
+	private int hp = 100;
 	
 	public Unit(Path2DCoord pos, int speed) {
 		this.distance = 0;
@@ -53,6 +54,14 @@ class Unit implements MovingObject<Path2DCoord>{
 	@Override
 	public boolean isAtTheEnd() {
 		return atTheEnd;
+	}
+
+	@Override
+	public void takeDamage(int dmg) throws UnitDeathException {
+		hp -=dmg;
+		if(hp<=0){
+			throw new UnitDeathException();
+		}
 	}
 
 }
