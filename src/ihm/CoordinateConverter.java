@@ -20,7 +20,7 @@ class CoordinateConverter {
 	}
 	
 	public Point fieldToGraphic(TwoDimCoordinate c){
-		System.out.println(new Point(c.column()*cellSize.width,c.row()*cellSize.height));
+		//System.out.println(new Point(c.column()*cellSize.width,c.row()*cellSize.height));
 		return new Point(c.column()*cellSize.width,c.row()*cellSize.height);
 	}
 	

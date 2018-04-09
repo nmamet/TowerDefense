@@ -4,7 +4,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.JComponent;
 
@@ -23,6 +25,17 @@ public class Unit{
 	
 	public Unit(MovingObject<Path2DCoord> unit){
 		this.unit = unit;
+		timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+            	if(unit.isAtTheEnd()) {
+            		timer.cancel();
+            	} else {
+            		unit.move();	
+            	}
+            }
+        }, 0, 100);
 	}
 	
 	public static void setField(Terrain t){
@@ -37,22 +50,23 @@ public class Unit{
 		return unit.getPos();
 	}
 
-	
-	/*
-	public Point getGraphicPosition() {
+	public void paintUnit(Graphics g) {
+		Rectangle r;
 		try {
-			//System.out.println("getGraphicsPosition");
-			//System.out.println("position de la premiere case");
-			//System.out.println((field.getCell(new TwoDimCoordinate(0, 0))).getLocation());
-			//System.out.println(new TwoDimCoordinate(5, 3).row());
-			//return field.getCell(unit.getPos()).getLocation();
-			return field.getCell(unit.getPos());
+			///System.out.println("position : row "+unit.getPos().row()+" column "+unit.getPos().column());
+			r = field.getCell(unit.getPos()).movingObjectGraphicFrame(unit);
 		} catch (OutOfFieldException e) {
-			
+			System.out.println("Erreur : unite hors du terrain lors du dessin de l'unite");
 			e.printStackTrace();
-			System.out.println("Ce n'est pas cense arriver. Erreur dans getGraphicsPosition; le path est en dehors du systeme");
 			System.exit(1);
-			return null;
+			r = null;
 		}
-	}*/
+		//System.out.println("Dessin de l'unite dans la case a la position "+ position);
+		//Dimension cellSize = converter.getCellSize();
+		g.fillRect(r.x, r.y, r.width, r.height);
+	}
+	
+	public void stop() {
+		timer.cancel();
+	}
 }

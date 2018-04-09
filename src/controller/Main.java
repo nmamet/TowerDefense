@@ -62,14 +62,14 @@ public class Main {
 			//Path2DCoord c2 = new Path2DCoord(1, 0);
 			//System.out.println(c1.equals(c2));
 			
-			int nbRow = 4;
-			int nbCol = 4;
-			int tabRowPath[] = {0,0,0,0,1,2,3,4,5,5,4,4,5,5,5,5,6,7,8,9,9,9,8};
-			int tabColPath[] = {0,1,2,3,3,3,3,3,3,4,4,5,5,6,7,8,8,8,8,8,7,6,6};
+			int nbRow = 10;
+			int nbCol = 10;
+			int tabRowPath[] = {0,0,0,0,1,2,3,4,5,5,4,4,5,5,5,5,6,7,8,9,9,9,8,7,6,6,6,6,6};
+			int tabColPath[] = {0,1,2,3,3,3,3,3,3,4,4,5,5,6,7,8,8,8,8,8,7,6,6,6,6,5,4,3,2};
 			
 			ConcreteModel m;
-			ArrayList<TwoDimCoordinate> l = Main.buildRandomPath(nbRow, nbCol);
-			//ArrayList<TwoDimCoordinate> l = Main.buildPath(tabRowPath, tabColPath);
+			//ArrayList<TwoDimCoordinate> l = Main.buildRandomPath(nbRow, nbCol);
+			ArrayList<TwoDimCoordinate> l = Main.buildPath(tabRowPath, tabColPath);
 			try {
 				m = new ConcreteModel(nbRow, nbCol, l);
 			} catch (CyclingPathException e) {
