@@ -3,8 +3,15 @@ package ihm;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageFilter;
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -22,6 +29,17 @@ public class Unit{
 	private Timer timer;
 	private static Terrain field;
 	private static CoordinateConverter converter;
+	private static SpriteBuilder sb = null;
+	static {
+		try {
+			sb = new SpriteBuilder(64, 3, 5, 15, "15_tank_set.png");
+		} catch (IOException e) {
+			System.out.println("erreur dans le fichier image des unites");
+			e.printStackTrace();
+			System.exit(1);
+		}
+	}
+	private static Image sprite = null;
 	
 	public Unit(MovingObject<Path2DCoord> unit){
 		this.unit = unit;
@@ -36,6 +54,8 @@ public class Unit{
             	}
             }
         }, 0, 100);
+        
+       
 	}
 	
 	public static void setField(Terrain t){
@@ -44,6 +64,7 @@ public class Unit{
 	
 	public static void setConverter(CoordinateConverter cc){
 		converter = cc;
+		sprite = sb.getSprite(0, cc.getCellSize().width/2, cc.getCellSize().height/2, 0);
 	}
 	
 	public PathPosition getPos(){
@@ -51,19 +72,28 @@ public class Unit{
 	}
 
 	public void paintUnit(Graphics g) {
-		Rectangle r;
+		SpriteInfo si;
 		try {
 			///System.out.println("position : row "+unit.getPos().row()+" column "+unit.getPos().column());
-			r = field.getCell(unit.getPos()).movingObjectGraphicFrame(unit);
+			si = field.getCell(unit.getPos()).paintMovingObject(unit);
 		} catch (OutOfFieldException e) {
 			System.out.println("Erreur : unite hors du terrain lors du dessin de l'unite");
 			e.printStackTrace();
 			System.exit(1);
-			r = null;
+			si = null;
 		}
 		//System.out.println("Dessin de l'unite dans la case a la position "+ position);
 		//Dimension cellSize = converter.getCellSize();
-		g.fillRect(r.x, r.y, r.width, r.height);
+		//g.fillRect(r.x, r.y, r.width, r.height);
+		Graphics2D g2d = (Graphics2D) g;
+		//double rotationRequired = Math.toRadians (si.rotation);
+		//g2d.rotate(rotationRequired,32,32);
+		g2d.drawImage(sprite, si.frame.x, si.frame.y, null);
+		//g2d.rotate(-rotationRequired, 32, 32);
+		
+		// Drawing the rotated image at the required drawing locations
+		
+		//g2d.drawImage(sprite.getScaledInstance(si.frame.width, si.frame.height, Image.SCALE_DEFAULT), si.frame.x, si.frame.y, null);
 	}
 	
 	public void stop() {

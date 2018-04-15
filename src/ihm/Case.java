@@ -3,6 +3,7 @@ package ihm;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 
@@ -207,51 +208,73 @@ class Case implements Cell<TwoDimCoordinate>{
 		return p;
 	}
 	
-	private Point switchOut(float k) {
+	private SpriteInfo switchOut(float k) {
 		Point graphPos = null;
+		SpriteInfo si = new SpriteInfo();
 		Rectangle r = unitPos(out);
 		switch(out){
 		case NORTH: 
 			graphPos = rectanglePart(r, 1-k, false);
 			//graphPos.y -= converter.getCellSize().height/2-2;
+			si.rotation = 0;
 			break;
-		case SOUTH: graphPos = rectanglePart(r, k, false);break;
+		case SOUTH: 
+			graphPos = rectanglePart(r, k, false);
+			si.rotation = 180;
+			break;
 		case WEST: 
 			graphPos = rectanglePart(r, 1-k, true);
 			//graphPos.x -= converter.getCellSize().width/2-2;
+			si.rotation = 90;
 			break;
-		case EAST: graphPos = rectanglePart(r, k, true);break;
+		case EAST: 
+			graphPos = rectanglePart(r, k, true);
+			si.rotation = 270;
+			break;
 		default: ;
 		}
-		return graphPos;
+		
+		si.frame = new Rectangle(graphPos.x, graphPos.y, 0, 0);
+		return si;
 	}
 	
-	private Point switchIn(float k) {
+	private SpriteInfo switchIn(float k) {
 		Point graphPos = null;
+		SpriteInfo si = new SpriteInfo();
 		Rectangle r = unitPos(in);
 		switch(in){
-		case NORTH: graphPos = rectanglePart(r, k, false);break;
+		case NORTH: 
+			graphPos = rectanglePart(r, k, false);
+			si.rotation = 180;
+			break;
 		case SOUTH: 
 			graphPos = rectanglePart(r, 1-k, false);
 			//graphPos.y -= converter.getCellSize().height/2-2;
+			si.rotation = 0;
 			break;
-		case WEST: graphPos = rectanglePart(r, k, true);break;
+		case WEST: 
+			graphPos = rectanglePart(r, k, true);
+			si.rotation = 270;
+			break;
 		case EAST: 
 			graphPos = rectanglePart(r, 1-k, true);
 			//graphPos.x -= converter.getCellSize().width/2-2;
+			si.rotation = 90;
 			break;
 		default: ;
 		}
-		return graphPos;
+		
+		si.frame = new Rectangle(graphPos.x, graphPos.y, 0, 0);
+		return si;
 	}
 	
-	public Rectangle movingObjectGraphicFrame(MovingObject<Path2DCoord> mo){
+	public SpriteInfo paintMovingObject(MovingObject<Path2DCoord> mo){
 		int maxDist = mo.getPos().maxDist();
 		int dist = mo.getDistance();
 		if(dist>maxDist) {
 			System.out.println("l'unite aurait du bouger vers la prochaine case");
 		}
-		Point graphPos = null;
+		SpriteInfo si = null;
 		float k = ((float)dist)/maxDist;
 		if(in == Direction.NONE){
 			if(out == Direction.NONE) {
@@ -260,27 +283,31 @@ class Case implements Cell<TwoDimCoordinate>{
 				System.exit(1);
 			} else {
 				//Premiere case du chemin
-				graphPos = switchOut(k);
+				si = switchOut(k);
 			}
 		} else {
 			if(out == Direction.NONE) {
 				//Derniere case du chemin
-				graphPos = switchIn(k);
+				si = switchIn(k);
 			} else {
 				//Case quelconque du chemin
 				if(k> 0.25) {
 					//Deuxieme "moitie" de la case
 					k = (dist - (float)(maxDist/4)) / (3*((float)maxDist)/4);
-					graphPos = switchOut(k);
+					si = switchOut(k);
 				} else {
 					//Premiere "moitie" de la case
 					k = dist / (((float) maxDist)/4);
-					graphPos = switchIn(k);
+					si = switchIn(k);
 				}
 			}
 		}
 		Dimension dimension = converter.getCellSize();
-		Rectangle r = new Rectangle(graphPos.x+1, graphPos.y+1, dimension.width/2-2, dimension.height/2-2);
-		return r;
+		si.frame.width = dimension.width/2;
+		si.frame.height = dimension.height/2;
+		//Rectangle r = new Rectangle(graphPos.x+1, graphPos.y+1, dimension.width/2-2, dimension.height/2-2);
+		//Image i = sprite.getScaledInstance(dimension.width/2, dimension.height/2, Image.SCALE_DEFAULT);
+		//g.drawImage(i, graphPos.x, graphPos.y, null);
+		return si;
 	}
 }

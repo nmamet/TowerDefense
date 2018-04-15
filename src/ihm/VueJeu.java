@@ -9,6 +9,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.sound.midi.ControllerEventListener;
 import javax.swing.BoxLayout;
@@ -26,6 +29,27 @@ import model.TwoDimArraySystem;
 public class VueJeu extends JFrame{
 	
 	Model<Path2DCoord> model;
+	GraphicManager centerPanel;
+	
+	private void launchWave() {
+		JFrame f = this;
+		Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+        	
+        	Iterator<MovingObject<Path2DCoord>> it = model.launchWave().iterator();
+        	
+            @Override
+            public void run() {
+            	if(it.hasNext()) {
+            		Unit u = new Unit(it.next());
+        		centerPanel.add(u);
+        		f.repaint();
+            	} else {
+            		this.cancel();
+            	}
+            }
+        }, 0, 100);
+	}
 	
 	public VueJeu(Model<Path2DCoord> m, TwoDimArraySystem ps, Path<Path2DCoord> path) throws PathOutOfField{
 		
@@ -33,7 +57,6 @@ public class VueJeu extends JFrame{
 		int widthWindow = 1000;
 		int heightWindow = 700;
 		Terrain field;
-		GraphicManager centerPanel;
 		//The place where you'll setup your turrets
 		
 		try {
@@ -124,7 +147,6 @@ public class VueJeu extends JFrame{
 		Container cp = getContentPane();
 		//System.out.println(getInsets().top);
 		int centerWidth = widthWindow-cp.getInsets().top-sidePanel.getPreferredSize().width;
-		int centerHeight = heightWindow;
 		//System.out.println(centerWidth);
 		//System.out.println(centerHeight);
 		
@@ -136,9 +158,6 @@ public class VueJeu extends JFrame{
 		setVisible(true);
 		//centerPanel.setField();
 		
-		MovingObject<Path2DCoord> mo = m.launchWave().iterator().next();
-		Unit u = new Unit(mo);
-		centerPanel.add(u);
-		this.repaint();
+		launchWave();
 	}
 }

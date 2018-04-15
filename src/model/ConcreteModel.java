@@ -36,7 +36,7 @@ public class ConcreteModel implements Model<Path2DCoord>{
 	@Override
 	public Collection<MovingObject<Path2DCoord>> launchWave() {
 		ArrayList<MovingObject<Path2DCoord>> l = new ArrayList<MovingObject<Path2DCoord>>();
-		for(int i = 0; i<1; i++) {
+		for(int i = 0; i<10; i++) {
 			l.add(new Unit(path.startingPos(), 10));
 		}
 		return l;

@@ -22,9 +22,9 @@ public class SpriteBuilder {
 	public SpriteBuilder(int sprSize, int nbRow, int nbCol, int nb, String fileName) throws IOException {
 		spriteSize = sprSize;
 		if(nb>nbRow*nbCol || nb<=(nbRow-1)*nbCol){
-			System.out.print("Erreur lors de la découpe de l'image : ");
+			System.out.print("Erreur lors de la decoupe de l'image : ");
 			System.out.print(fileName);
-			System.out.println("; taille incohérente.");
+			System.out.println("; taille incoherente.");
 			System.exit(1);
 		}
 		nbSprites = nb;
@@ -40,7 +40,7 @@ public class SpriteBuilder {
 		}
 	}
 	
-	public Image getSprite(int n){
+	public BufferedImage getSprite(int n){
 		return sprites[n];
 	}
 	

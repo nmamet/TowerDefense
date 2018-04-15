@@ -21,7 +21,7 @@ class Unit implements MovingObject<Path2DCoord>{
 	@Override
 	public void move() {
 		//System.out.println("move");
-		System.out.println("position : "+pos.column() + ", " + pos.row() + "; distance : "+distance);
+		//System.out.println("position : "+pos.column() + ", " + pos.row() + "; distance : "+distance);
 		int parcouru = 0;
 		while(parcouru<speed && !atTheEnd){
 			if(distance+speed-parcouru<=pos.maxDist()) {
@@ -31,10 +31,10 @@ class Unit implements MovingObject<Path2DCoord>{
 				if(pos.equals(pos.nextPos())) {
 					atTheEnd = true;
 				} else {
-					System.out.println("parcouru : "+parcouru+"; distance : "+distance);
+					//System.out.println("parcouru : "+parcouru+"; distance : "+distance);
 					parcouru = pos.maxDist() - distance;
 					distance = 0;
-					System.out.println("parcouru : "+parcouru+"; distance : "+distance);
+					//System.out.println("parcouru : "+parcouru+"; distance : "+distance);
 					pos = pos.nextPos();
 				}
 			}

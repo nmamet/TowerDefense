@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Insets;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -40,9 +41,11 @@ public class GraphicManager extends JComponent {
 	public void paintComponent(Graphics g){
 		//System.out.println("Dessin du manager");
 		field.paintField(g);
+		Collections.reverse(units);
 		for(Unit u : units) {
 			u.paintUnit(g);
 		}
+		Collections.reverse(units);
 	}
 	
 	public void add(Unit u) {
