@@ -17,10 +17,14 @@ class Turret implements AttackingObject{
 		Turret.t = t;
 	}
 	
-	public Turret(TwoDimCoordinate pos, int range){
+	public Turret(TwoDimCoordinate pos, int range, int attackSpeed, int damage){
+		System.out.println("turret placed");
 		this.pos = pos;
 		this.range = range;
+		this.attackSpeed = attackSpeed;
+		this.damage = damage;
 		refreshRange();
+		System.out.println(squaresInRange.size());
 	}
 	
 	private void refreshRange(){
@@ -31,7 +35,11 @@ class Turret implements AttackingObject{
 				int d = i-j;
 				if(s<=range && s>=-range && d <=range && d>=-range){
 					try {
+						
+						//System.out.println("bob1");
 						squaresInRange.add(t.getCell(new TwoDimCoordinate(pos.row()+i, pos.column()+j)));
+						//System.out.println("position : row "+(pos.row()+i)+", column "+(pos.column()+j));
+						//System.out.println("bob2");
 					} catch (OutOfFieldException e) {
 						//si la case est en dehors du terrain, on ne l'ajoute pas -> rien à faire
 					}
@@ -40,35 +48,24 @@ class Turret implements AttackingObject{
 		}
 	}
 	
-	private MovingObject<Path2DCoord> cible(){
-		boolean found = false;
-		Collection<MovingObject<Path2DCoord>> units = t.getUnits();
-		Iterator<MovingObject<Path2DCoord>> i = units.iterator();
-		MovingObject<Path2DCoord> tmp = null;
-		while(!found && i.hasNext()){
-			tmp = i.next();
-			found = squaresInRange.contains(tmp);
-		}
-		if(!found){
-			tmp = null;
-		}
-		return tmp;
-	}
-
 	@Override
-	public void attack() throws UnitDeathException {
-		//une seule tour peut attaquer a la fois
-		synchronized(Turret.class){
-			MovingObject<Path2DCoord> cible = cible();
-			if(cible != null){
-				cible.takeDamage(damage);
-			}
+	public void attack(){
+		
+		MovingTarget<Path2DCoord> cible = t.getTarget(squaresInRange);
+		if(cible != null){
+			//System.out.println("turret attack");
+			cible.takeDamage(damage);
 		}
 	}
 
 	@Override
 	public int getAttackPeriod() {
 		return attackSpeed;
+	}
+	
+	@Override
+	public TwoDimCoordinate getPos(){
+		return pos;
 	}
 	
 }

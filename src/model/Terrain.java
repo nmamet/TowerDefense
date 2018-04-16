@@ -3,12 +3,14 @@ package model;
 import java.awt.geom.Path2D;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.concurrent.Semaphore;
 
 class Terrain implements Field<TwoDimCoordinate, Square> {
 	private Square[][] tab;
 	private TwoDimArraySystem ps;
-	private ArrayList<MovingObject<Path2DCoord>> units;
+	private ArrayList<MovingTarget<Path2DCoord>> units;
 	private Semaphore semUnits;
 	
 	
@@ -23,7 +25,7 @@ class Terrain implements Field<TwoDimCoordinate, Square> {
 				tab[i][j] = new Square(ps, new TwoDimCoordinate(i, j));
 			}
 		}
-		units = new ArrayList<MovingObject<Path2DCoord>>();
+		units = new ArrayList<MovingTarget<Path2DCoord>>();
 		semUnits = new Semaphore(1);
 	}
 	
@@ -32,6 +34,23 @@ class Terrain implements Field<TwoDimCoordinate, Square> {
 			return null;
 		}
 		Terrain t = new Terrain(ps);
+		return t;
+	}
+	
+	public static Terrain buildTerrain(TwoDimArraySystem ps, ArrayList<TwoDimCoordinate> path){
+		if(ps.nbOfRows() <= 0 || ps.nbOfColumns() <= 0){
+			return null;
+		}
+		Terrain t = new Terrain(ps);
+		for(TwoDimCoordinate pos : path){
+			try {
+				t.getCell(pos).setCrossable(false);
+			} catch (OutOfFieldException e) {
+				System.out.println("Should not happen cause the path has benn checked already (buildTerrain)");
+				e.printStackTrace();
+				System.exit(1);
+			}
+		}
 		return t;
 	}
 	
@@ -49,15 +68,54 @@ class Terrain implements Field<TwoDimCoordinate, Square> {
 		return ps;
 	}
 
-	public void addUnits(Collection<MovingObject<Path2DCoord>> units) {
+	private void lockUnitsList(){
+		try {
+			semUnits.acquire();
+		} catch (InterruptedException e) {
+			System.out.println("Thread interrompu : verrouillage unites (model)");
+			e.printStackTrace();
+			System.exit(1);
+		}
+	}
+	
+	private void releaseUnitsList(){
+		semUnits.release();
+	}
+	
+	public void addUnits(Collection<MovingTarget<Path2DCoord>> units) {
+		lockUnitsList();
 		this.units.addAll(units);
+		releaseUnitsList();
 	}
 	
-	public Collection<MovingObject<Path2DCoord>> getUnits(){
-		return units;
+	public MovingTarget<Path2DCoord> getTarget(HashSet<Square> squaresInRange){
+		boolean found = false;
+		lockUnitsList();
+		Iterator<MovingTarget<Path2DCoord>> i = units.iterator();
+		MovingTarget<Path2DCoord> tmp = null;
+		while(!found && i.hasNext()){
+			tmp = i.next();
+			//System.out.println("position : row "+tmp.getPos().row()+", column "+tmp.getPos().column());
+			
+			try {
+				found = squaresInRange.contains(getCell(tmp.getPos()));
+			} catch (OutOfFieldException e) {
+				System.out.println("ce n'est pas cense arriver (unite hors du terrain dans getTarget)");
+				e.printStackTrace();
+				System.exit(1);
+			}
+			//System.out.println(found);
+		}
+		releaseUnitsList();
+		if(!found){
+			tmp = null;
+		}
+		return tmp;
 	}
 	
-	public void removeUnit(Unit u){
-		units.remove(u);
+	public void removeUnit(MovingTarget<Path2DCoord> unit) {
+		lockUnitsList();
+		units.remove(unit);
+		releaseUnitsList();
 	}
 }

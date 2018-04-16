@@ -10,7 +10,7 @@ import java.awt.Rectangle;
 import javax.swing.JComponent;
 
 import model.Cell;
-import model.MovingObject;
+import model.MovingTarget;
 import model.Path2DCoord;
 import model.Position;
 import model.PositioningSystem;
@@ -192,8 +192,8 @@ class Case implements Cell<TwoDimCoordinate>{
 		return pos;
 	}
 	
-	//donne le point "le long du rectangle" r, selon l'axe x ou y, en partant du début ou de la fin
-	//le rapport k définit le point renvoyé, 0<=k<=1
+	//donne le point "le long du rectangle" r, selon l'axe x ou y, en partant du dï¿½but ou de la fin
+	//le rapport k dï¿½finit le point renvoyï¿½, 0<=k<=1
 	private static Point rectanglePart(Rectangle r, float k, boolean axeX) {
 		if(k < 0 || k > 1) {
 			System.out.println("erreur de rapport dans le calcul de la position");
@@ -268,7 +268,7 @@ class Case implements Cell<TwoDimCoordinate>{
 		return si;
 	}
 	
-	public SpriteInfo paintMovingObject(MovingObject<Path2DCoord> mo){
+	public SpriteInfo paintMovingObject(MovingTarget<Path2DCoord> mo){
 		int maxDist = mo.getPos().maxDist();
 		int dist = mo.getDistance();
 		if(dist>maxDist) {

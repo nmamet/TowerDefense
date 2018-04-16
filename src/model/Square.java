@@ -4,10 +4,12 @@ class Square implements Cell<TwoDimCoordinate> {
 
 	private PositioningSystem<TwoDimCoordinate> ps;
 	private TwoDimCoordinate c;
+	private boolean isFree;
 	
 	public Square(TwoDimArraySystem ps, TwoDimCoordinate c){
 		this.ps = ps;
 		this.c = c;
+		isFree = true;
 	}
 	
 	@Override
@@ -18,5 +20,21 @@ class Square implements Cell<TwoDimCoordinate> {
 	@Override
 	public TwoDimCoordinate pos() {
 		return c;
+	}
+	
+	public boolean isFree(){
+		return isFree;
+	}
+
+	public AttackingObject placeTurret() {
+		if(isFree){
+			isFree = false;
+			return new Turret(c,3,200,5);
+		}
+		return null;
+	}
+	
+	public void setCrossable(boolean b){
+		isFree = b;
 	}
 }

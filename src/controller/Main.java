@@ -10,7 +10,7 @@ import ihm.VueJeu;
 import ihm.VueMenu;
 import model.ConcreteModel;
 import model.Model;
-import model.MovingObject;
+import model.MovingTarget;
 import model.Path;
 import model.Path2DCoord;
 import model.PositioningSystem;
@@ -88,7 +88,7 @@ public class Main {
 			}
 			//VueMenu v = new VueMenu();
 		}
-		public Collection<MovingObject<Path2DCoord>> launchWave() {
+		public Collection<MovingTarget<Path2DCoord>> launchWave() {
 			// TODO Auto-generated method stub
 			return null;
 		}

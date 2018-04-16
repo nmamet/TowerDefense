@@ -14,9 +14,9 @@ class CoordinateConverter {
 	
 	public CoordinateConverter(Dimension dim, TwoDimArraySystem s){
 		ps = s;
-		cellSize = new Dimension(dim.width/s.nbOfColumns(), dim.height/s.nbOfRows());
+		Dimension tmp = new Dimension(dim.width/s.nbOfColumns(), dim.height/s.nbOfRows());
 		//On s'assure que les dimensions d'une case sont multiples de 4 (pour des raisons d'affichages du chemin)
-		cellSize = new Dimension(cellSize.width - (cellSize.width%4), cellSize.height - (cellSize.height%4));
+		cellSize = new Dimension(tmp.width - (tmp.width%4), tmp.height - (tmp.height%4));
 	}
 	
 	public Point fieldToGraphic(TwoDimCoordinate c){
@@ -26,7 +26,7 @@ class CoordinateConverter {
 	
 	//todo
 	public TwoDimCoordinate graphicToField(Point p){
-		return new TwoDimCoordinate(p.x/cellSize.width, p.y/cellSize.height);
+		return new TwoDimCoordinate(p.x/cellSize.height, p.y/cellSize.width);
 	}
 	
 	public Dimension getCellSize(){

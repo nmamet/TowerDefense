@@ -1,12 +1,13 @@
 package model;
 
-class Unit implements MovingObject<Path2DCoord>{
+class Unit implements MovingTarget<Path2DCoord>{
 
 	private Path2DCoord pos;
 	private int distance;
 	private int speed;
 	private boolean atTheEnd;
 	private int hp = 100;
+	private int maxHp = 100;
 	
 	public Unit(Path2DCoord pos, int speed) {
 		this.distance = 0;
@@ -52,15 +53,21 @@ class Unit implements MovingObject<Path2DCoord>{
 	}
 	
 	@Override
+	public float getHealthPercentage(){
+		return hp/ (float) maxHp;
+	}
+	
+	@Override
 	public boolean isAtTheEnd() {
 		return atTheEnd;
 	}
 
 	@Override
-	public void takeDamage(int dmg) throws UnitDeathException {
+	public void takeDamage(int dmg){
+		System.out.println("unit taking damage; hp = "+hp);
 		hp -=dmg;
 		if(hp<=0){
-			throw new UnitDeathException();
+			atTheEnd = true;;
 		}
 	}
 
