@@ -29,7 +29,7 @@ class Square implements Cell<TwoDimCoordinate> {
 	public AttackingObject placeTurret() {
 		if(isFree){
 			isFree = false;
-			return new Turret(c,3,200,5);
+			return new Turret(c,3,120,5);
 		}
 		return null;
 	}

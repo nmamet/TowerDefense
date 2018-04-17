@@ -6,6 +6,7 @@ class Unit implements MovingTarget<Path2DCoord>{
 	private int distance;
 	private int speed;
 	private boolean atTheEnd;
+	private boolean dead;
 	private int hp = 100;
 	private int maxHp = 100;
 	
@@ -17,6 +18,7 @@ class Unit implements MovingTarget<Path2DCoord>{
 			System.out.println("warning : unite initialisee avec une pos nulle");
 		}
 		atTheEnd = false;
+		dead = false;
 	}
 	
 	@Override
@@ -67,8 +69,13 @@ class Unit implements MovingTarget<Path2DCoord>{
 		System.out.println("unit taking damage; hp = "+hp);
 		hp -=dmg;
 		if(hp<=0){
-			atTheEnd = true;;
+			dead = true;;
 		}
+	}
+
+	@Override
+	public boolean isDead() {
+		return dead;
 	}
 
 }

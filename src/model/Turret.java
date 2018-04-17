@@ -54,6 +54,7 @@ class Turret implements AttackingObject{
 		MovingTarget<Path2DCoord> cible = t.getTarget(squaresInRange);
 		if(cible != null){
 			//System.out.println("turret attack");
+			t.addAttack((Attack) new LaserBeam(pos, cible.getPos(), cible.getDistance()));
 			cible.takeDamage(damage);
 		}
 	}

@@ -10,6 +10,8 @@ public class ConcreteModel implements Model<Path2DCoord>{
 	private TwoDimArraySystem ps;
 	private Terrain t;
 	private ConcretePath path;
+	private int gold = 300;
+	private int waveNumber = 0;
 	
 	public TwoDimArraySystem getPosSystem(){
 		return ps;
@@ -37,8 +39,9 @@ public class ConcreteModel implements Model<Path2DCoord>{
 
 	@Override
 	public Collection<MovingTarget<Path2DCoord>> launchWave() {
+		waveNumber++;
 		ArrayList<MovingTarget<Path2DCoord>> l = new ArrayList<MovingTarget<Path2DCoord>>();
-		for(int i = 0; i<10; i++) {
+		for(int i = 0; i<10*waveNumber; i++) {
 			l.add(new Unit(path.startingPos(), 10));
 		}
 		return l;
@@ -52,13 +55,16 @@ public class ConcreteModel implements Model<Path2DCoord>{
 	@Override
 	public void removeUnit(MovingTarget<Path2DCoord> unit) {
 		t.removeUnit(unit);
-		
 	}
 	
 	@Override
 	public AttackingObject placeTurret(Path2DCoord pos){
 		AttackingObject ret;
-		
+		if(gold<100) {
+			return null;
+		} else {
+			gold -= 100;
+		}
 		try {
 			ret = t.getCell(pos).placeTurret();
 		} catch (OutOfFieldException e) {
@@ -69,5 +75,32 @@ public class ConcreteModel implements Model<Path2DCoord>{
 		}
 		return ret;
 	}
-	
+
+	@Override
+	public Collection<Attack> getAllAttacks() {
+		return t.getAllAttacks();
+	}
+
+	@Override
+	public void unitKill() {
+		gold += 2;
+	}
+
+	@Override
+	public void unitLeak() throws DefeatException{
+		gold -= 100;
+		if(gold<0) {
+			throw new DefeatException();
+		}
+	}
+
+	@Override
+	public void income() {
+		gold = (int) (gold * 1.1);
+	}
+
+	@Override
+	public int getGold() {
+		return gold;
+	}
 }

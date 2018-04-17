@@ -12,6 +12,8 @@ class Terrain implements Field<TwoDimCoordinate, Square> {
 	private TwoDimArraySystem ps;
 	private ArrayList<MovingTarget<Path2DCoord>> units;
 	private Semaphore semUnits;
+	private ArrayList<Attack> attacks;
+	private Semaphore semAttacks;
 	
 	
 	private Terrain(TwoDimArraySystem ps){
@@ -27,6 +29,8 @@ class Terrain implements Field<TwoDimCoordinate, Square> {
 		}
 		units = new ArrayList<MovingTarget<Path2DCoord>>();
 		semUnits = new Semaphore(1);
+		attacks = new ArrayList<Attack>();
+		semAttacks = new Semaphore(1);
 	}
 	
 	public static Terrain buildTerrain(TwoDimArraySystem ps){
@@ -82,6 +86,20 @@ class Terrain implements Field<TwoDimCoordinate, Square> {
 		semUnits.release();
 	}
 	
+	private void lockAttacksList(){
+		try {
+			semAttacks.acquire();
+		} catch (InterruptedException e) {
+			System.out.println("Thread interrompu : verrouillage attaques (model)");
+			e.printStackTrace();
+			System.exit(1);
+		}
+	}
+	
+	private void releaseAttacksList() {
+		semAttacks.release();
+	}
+	
 	public void addUnits(Collection<MovingTarget<Path2DCoord>> units) {
 		lockUnitsList();
 		this.units.addAll(units);
@@ -117,5 +135,19 @@ class Terrain implements Field<TwoDimCoordinate, Square> {
 		lockUnitsList();
 		units.remove(unit);
 		releaseUnitsList();
+	}
+
+	public void addAttack(Attack laserBeam) {
+		lockAttacksList();
+		attacks.add(laserBeam);
+		releaseAttacksList();
+	}
+	
+	public Collection<Attack> getAllAttacks() {
+		lockAttacksList();
+		Collection<Attack> l = new ArrayList<Attack>(attacks);
+		attacks.clear();
+		releaseAttacksList();
+		return l;
 	}
 }

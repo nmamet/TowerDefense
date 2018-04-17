@@ -31,6 +31,7 @@ public class Unit{
 	private static CoordinateConverter converter;
 	private static SpriteBuilder sb = null;
 	private boolean isDead = false;
+	private boolean isAtTheEnd = false;
 	static {
 		try {
 			sb = new SpriteBuilder(64, 3, 5, 15, "15_tank_set.png");
@@ -50,12 +51,15 @@ public class Unit{
             public void run() {
             	if(unit.isAtTheEnd()) {
             		timer.cancel();
+            		isAtTheEnd = true;
+            	} else  if(unit.isDead()){
+            		timer.cancel();
             		isDead = true;
             	} else {
             		unit.move();
             		if(unit.isAtTheEnd()) {
                 		timer.cancel();
-                		isDead = true;
+                		isAtTheEnd = true;
                 	}
             	}
             }
@@ -77,9 +81,13 @@ public class Unit{
 		return unit.getPos();
 	}
 
-	public void paintUnit(Graphics g) throws DeathException{
+	public void paintUnit(Graphics g) throws DeathException, LeakException{
 		SpriteInfo si;
-		if(isDead || unit.isAtTheEnd()){
+		if(isAtTheEnd || unit.isAtTheEnd()){
+			isAtTheEnd = true;
+			throw new LeakException();
+		}
+		if(isDead || unit.isDead()) {
 			isDead = true;
 			throw new DeathException();
 		}

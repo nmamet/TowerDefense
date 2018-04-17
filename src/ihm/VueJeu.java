@@ -22,6 +22,7 @@ import javax.sound.midi.ControllerEventListener;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import model.Model;
@@ -37,29 +38,35 @@ public class VueJeu extends JFrame{
 	Model<Path2DCoord> model;
 	GraphicManager centerPanel;
 	public boolean buttonclicked = false;
+	private int wavePeriod = 1100;
 	
 	private void launchWave() {
 		JFrame f = this;
-		Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-        	
-        	Iterator<MovingTarget<Path2DCoord>> it = model.launchWave().iterator();
-        	
-            @Override
-            public void run() {
-            	if(it.hasNext()) {
-            		MovingTarget<Path2DCoord> mt = it.next();
-            		Unit u = new Unit(mt);
-            		ArrayList<MovingTarget<Path2DCoord>> mtlist = new ArrayList<MovingTarget<Path2DCoord>>();
-            		mtlist.add(mt);
-            		model.addUnits(mtlist);
-            		centerPanel.add(u);
-            		f.repaint();
-            	} else {
-            		this.cancel();
-            	}
-            }
-        }, 0, 1000);
+		wavePeriod -= 100;
+		if(wavePeriod > 0) {
+			Timer timer = new Timer();
+	        timer.schedule(new TimerTask() {
+	        	
+	        	Iterator<MovingTarget<Path2DCoord>> it = model.launchWave().iterator();
+	        	
+	            @Override
+	            public void run() {
+	            	if(it.hasNext()) {
+	            		MovingTarget<Path2DCoord> mt = it.next();
+	            		Unit u = new Unit(mt);
+	            		ArrayList<MovingTarget<Path2DCoord>> mtlist = new ArrayList<MovingTarget<Path2DCoord>>();
+	            		mtlist.add(mt);
+	            		model.addUnits(mtlist);
+	            		centerPanel.add(u);
+	            		f.repaint();
+	            	} else {
+	            		this.cancel();
+	            	}
+	            }
+	        }, 0, wavePeriod);
+		} else {
+			centerPanel.lastWave();
+		}
 	}
 	
 	public VueJeu(Model<Path2DCoord> m, TwoDimArraySystem ps, Path<Path2DCoord> path) throws PathOutOfField{
@@ -116,6 +123,10 @@ public class VueJeu extends JFrame{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		turretMenu.add(new JLabel("Cost 100 gold"));
+		turretMenu.add(new JLabel("You possess"));
+		turretMenu.add(new GoldLabel(model));
+		turretMenu.add(new JLabel("gold"));
 		/*
 		SpriteBuilder unitBuilder;
 		try{
@@ -161,6 +172,7 @@ public class VueJeu extends JFrame{
 		CoordinateConverter cc = new CoordinateConverter(new Dimension(centerWidth-10,heightWindow-33), ps);
 		Case.setConverter(cc);
 		Unit.setConverter(cc);
+		centerPanel.setCC(cc);
 		GraphicTurret.setConverter(cc);
 		Unit.setField(field);
 		
