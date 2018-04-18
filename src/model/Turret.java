@@ -18,13 +18,13 @@ class Turret implements AttackingObject{
 	}
 	
 	public Turret(TwoDimCoordinate pos, int range, int attackSpeed, int damage){
-		System.out.println("turret placed");
+		//System.out.println("turret placed");
 		this.pos = pos;
 		this.range = range;
 		this.attackSpeed = attackSpeed;
 		this.damage = damage;
 		refreshRange();
-		System.out.println(squaresInRange.size());
+		//System.out.println(squaresInRange.size());
 	}
 	
 	private void refreshRange(){

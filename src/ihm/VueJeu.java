@@ -154,7 +154,7 @@ public class VueJeu extends JFrame{
 			}
 		});
 		otherStuff.add(buttonLaunch);
-		otherStuff.add(new JButton("Sell"));
+		//otherStuff.add(new JButton("Sell"));
 		
 		getContentPane().add(sidePanel, BorderLayout.EAST);
 		//JFrame parameters
@@ -198,7 +198,7 @@ public class VueJeu extends JFrame{
 					Point p = e.getPoint();
 					Point p2 = new Point(p.y,p.x);
 					TwoDimCoordinate pos = cc.graphicToField(p2);
-					System.out.println("button clicked at pos "+pos.row()+", "+pos.column());
+					//System.out.println("button clicked at pos "+pos.row()+", "+pos.column());
 					if(ps.isInSystem(pos)){
 						//System.out.println(cc.graphicToField(e.getPoint()));
 						centerPanel.addTurret(pos, turretBuilder.getSprite(0));

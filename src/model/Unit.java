@@ -66,7 +66,7 @@ class Unit implements MovingTarget<Path2DCoord>{
 
 	@Override
 	public void takeDamage(int dmg){
-		System.out.println("unit taking damage; hp = "+hp);
+		//System.out.println("unit taking damage; hp = "+hp);
 		hp -=dmg;
 		if(hp<=0){
 			dead = true;;

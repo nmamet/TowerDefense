@@ -27,7 +27,7 @@ public class BoutonTour extends JButton{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				vj.buttonclicked = true;
-				System.out.println("buttonturret clicked");
+				//System.out.println("buttonturret clicked");
 			}
 		});
 	}
